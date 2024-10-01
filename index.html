@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Poemas</title>
+    <style>
+        body {
+            background-color: #1E90FF;
+            font-family: 'Courier New', Courier, monospace;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            overflow: hidden;
+        }
+
+        #title {
+            font-size: 3em;
+            color: #ff6f61;
+            text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.1);
+            margin-bottom: 10px;
+            text-align: center;
+        }
+
+        #sub-title {
+            font-size: 1.8em;
+            color: #444;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        #message-container {
+            text-align: center;
+            display: none;
+        }
+
+        .card {
+            font-size: 50px;
+            color: #ff6f61;
+            cursor: pointer;
+            position: absolute;
+            animation: float 5s ease-in-out infinite;
+        }
+
+        #final-message {
+            display: none;
+            font-size: 1.5em;
+            background-color: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+            color: #333;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            max-width: 80vw;
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+
+        #close-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: #ff6f61;
+            border: none;
+            color: white;
+            font-size: 1.5em;
+            cursor: pointer;
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            text-align: center;
+            line-height: 30px;
+        }
+
+        @keyframes float {
+            0% { transform: translateY(0); }
+            50% { transform: translateY(-30px); }
+            100% { transform: translateY(0); }
+        }
+
+        .btn {
+            display: none;
+            background-color: #ff6f61;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 20px;
+            font-size: 1.2em;
+            cursor: pointer;
+            margin-top: 20px;
+        }
+
+        .btn:hover {
+            background-color: #ff3b3b;
+        }
+
+        .texto-fundo-esquerdo {
+            position: fixed;
+            bottom: 0;
+            right: 0;
+            margin: 10px;
+
+        .texto-fundo-direito {
+            position: fixed;
+            bottom: 0;
+            right: 0;
+            margin: 10px;
+            font-size: 20px;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="title">a</div>
+    <div id="sub-title">ab</div>
+
+    <div id="message-container">
+        <div id="final-message">
+            <button id="close-btn">&times;</button>
+            <p>.asdd</p>
+            <p>dddas.</p>
+        </div>
+        <button class="btn" id="restart-btn">Clique aqui para começar de novo</button>
+    </div>
+ 
+    <span class="card" style="top: 40%; left: 30%;" data-message="a" >💌</span>
+
+    <script>
+        const DISCORD_WEBHOOK_URL = 'https://discord.com/api/webhooks/1290415258871009340/sd7N_O11rsIZLzYWuZlyhdFFA1v-QOMAVX4mOli2ijQ_aCweW9jxCxv1ZGLr2AXoWxo7';
+
+        function sendDiscordNotification() {
+            const payload = {
+                content: 'Um usuário acaba de acessar o site.'
+            };
+
+            fetch(DISCORD_WEBHOOK_URL, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(payload)
+            }).then(response => {
+                if (!response.ok) {
+                    console.error('Erro ao enviar a notificação:', response);
+                }
+            }).catch(error => {
+                console.error('Erro ao enviar a notificação:', error);
+            });
+        }
+
+        window.onload = () => {
+            sendDiscordNotification();
+        };
+
+        // Função para quando clicar na cartinha
+        const cards = document.querySelectorAll('.card');
+        const messageContainer = document.getElementById('message-container');
+        const finalMessage = document.getElementById('final-message');
+        const restartBtn = document.getElementById('restart-btn');
+
+        cards.forEach(card => {
+            card.addEventListener('click', function() {
+                const message = this.getAttribute('data-message');
+                showMessage(message);
+                this.style.display = 'none';  // Remove a cartinha após o clique
+            });
+        });
+
+        function showMessage(message) {
+            const messageBox = document.createElement('div');
+            messageBox.style.position = 'fixed';
+            messageBox.style.top = '50%';
+            messageBox.style.left = '50%';
+            messageBox.style.transform = 'translate(-50%, -50%)';
+            messageBox.style.backgroundColor = 'white';
+            messageBox.style.padding = '20px';
+            messageBox.style.borderRadius = '10px';
+            messageBox.style.boxShadow = '0 0 15px rgba(0, 0, 0, 0.2)';
+            messageBox.style.color = '#333';
+            messageBox.style.fontSize = '1.2em';
+            messageBox.style.maxWidth = '80vw';
+            messageBox.style.maxHeight = '80vh';
+            messageBox.style.overflowY = 'auto';
+
+            const closeBtn = document.createElement('button');
+            closeBtn.id = 'close-btn';
+            closeBtn.textContent = '×';
+            closeBtn.style.position = 'absolute';
+            closeBtn.style.top = '10px';
+            closeBtn.style.right = '10px';
+            closeBtn.style.background = '#ff6f61';
+            closeBtn.style.border = 'none';
+            closeBtn.style.color = 'white';
+            closeBtn.style.fontSize = '1.5em';
+            closeBtn.style.cursor = 'pointer';
+            closeBtn.style.borderRadius = '50%';
+            closeBtn.style.width = '30px';
+            closeBtn.style.height = '30px';
+            closeBtn.style.textAlign = 'center';
+            closeBtn.style.lineHeight = '30px';
+            closeBtn.addEventListener('click', () => {
+                messageBox.remove();
+                checkCards();
+            });
+
+            const messageContent = document.createElement('p');
+            messageContent.textContent = message;
+
+            messageBox.appendChild(messageContent);
+            messageBox.appendChild(closeBtn);
+            document.body.appendChild(messageBox);
+        }
+
+        function checkCards() {
+            const visibleCards = document.querySelectorAll('.card:not([style*="display: none"])');
+            if (visibleCards.length === 0) {
+                showFinalMessage();
+            }
+        }
+
+        function showFinalMessage() {
+            messageContainer.style.display = 'block';
+            finalMessage.style.display = 'block';
+            restartBtn.style.display = 'inline-block';
+        }
+
+        restartBtn.addEventListener('click', () => {
+            location.reload();  // Reinicia a página
+        });
+    </script>
+    <title>feito dia 07/09/24 às 03:47 da madrugada</title>
+    <div class="texto-fundo-direito">
+        feito dia 07/09/24 às 03:47 da madrugada
+    </div>
+    
+</body>
+</html>
